@@ -17,3 +17,5 @@ if __name__ == "__main__":
         print("Completed.")
     else:
         print("Not completed.")
+
+    crud.delete_task(one_task.item_id)
