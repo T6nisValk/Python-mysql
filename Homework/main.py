@@ -1,107 +1,153 @@
 import crud
+import tkinter as tk
+from tkinter import messagebox
+
+
+def refresh():
+    display_tasks_lb.delete(0, tk.END)
+    display_lists_lb.delete(0, tk.END)
+    for i, list in enumerate(crud.select_lists()):
+        display_lists_lb.insert(i, f"ID: {list.list_id}, Name: {list.title}")
+    for i, task in enumerate(crud.select_tasks()):
+        display_tasks_lb.insert(
+            i, f"ID: {task.item_id}, "
+            f"Name: {task.name}, "
+            f"Status: {'Completed' if task.state else 'Not completed'}, "
+            f"List ID: {task.list_id}")
+
+
+def delete_list():
+    if display_lists_lb.curselection():
+        list_id = display_lists_lb.selection_get().split(" ")[1].rstrip(",")
+        name = crud.select_list(int(list_id))
+        crud.delete_list(int(list_id))
+        messagebox.showinfo(
+            title="Info", message=f"List {name.title} and all it's tasks successfully deleted.")
+    else:
+        messagebox.showerror(title="Error", message="No list selected")
+
+
+def delete_task():
+    if display_tasks_lb.curselection():
+        task_id = display_tasks_lb.selection_get().split(" ")[1].rstrip(",")
+        name = crud.select_task(int(task_id))
+        crud.delete_task(int(task_id))
+        messagebox.showinfo(
+            title="Info", message=f"Task {name.name} successfully deleted.")
+    else:
+        messagebox.showerror(title="Error", message="No task selected")
+
+
+def create_list():
+    if len(name_input.get()) > 3:
+        name = name_input.get()
+        name_input.delete(0, tk.END)
+        crud.create_todo_list(name)
+        messagebox.showinfo(
+            title="Info", message=f"List '{name}' successfully created!")
+    else:
+        messagebox.showwarning(
+            title="Warning", message="Name should be at least 3 characters.")
+
+
+def create_task():
+    if display_lists_lb.curselection():
+        if len(name_input.get()) > 3:
+            selected_list_id = display_lists_lb.selection_get().split(" ")[
+                1].rstrip(",")
+            list_name = crud.select_list(selected_list_id)
+            name = name_input.get()
+            name_input.delete(0, tk.END)
+            crud.create_task(selected_list_id, name)
+            messagebox.showinfo(
+                title="Info", message=f"Task '{name}' for '{list_name.title}' successfully created!")
+        else:
+            messagebox.showwarning(
+                title="Warning", message="Name should be at least 3 characters.")
+    else:
+        messagebox.showerror(title="Error", message="No list selected")
+
+
+def task_complete():
+    if display_tasks_lb.curselection():
+        selected_task_id = display_tasks_lb.selection_get().split(" ")[
+            1].rstrip(",")
+        crud.select_task(selected_task_id)
+        task = crud.select_task(selected_task_id)
+        task.state = True
+        messagebox.showinfo(
+            title="Info", message=f"{task.name} set to 'Completed'")
+
+    else:
+        messagebox.showerror(title="Error", message="No task selected")
+
+
+def task_uncomplete():
+    if display_tasks_lb.curselection():
+        selected_task_id = display_tasks_lb.selection_get().split(" ")[
+            1].rstrip(",")
+        task = crud.select_task(selected_task_id)
+        task.state = False
+        messagebox.showinfo(
+            title="Info", message=f"{task.name} set to 'Not Completed'")
+    else:
+        messagebox.showerror(title="Error", message="No task selected")
+
+
+app = tk.Tk()
+app.title("Todo App")
+app.geometry("400x600")
+
+lists_label = tk.Label(app, text="Available lists.", justify="left")
+lists_label.pack(padx=5, pady=5, anchor="w")
+
+display_lists_lb = tk.Listbox(app, width=38)
+display_lists_lb.pack(fill="x", padx=5)
+
+tasks_label = tk.Label(app, text="Available tasks.", justify="left")
+tasks_label.pack(padx=5, pady=5, anchor="w")
+
+display_tasks_lb = tk.Listbox(app, width=39)
+
+display_tasks_lb.pack(padx=5, fill="x")
+
+refresh_data = tk.Button(
+    app, text="Refresh lists and tasks", command=lambda: refresh())
+refresh_data.pack(padx=5, pady=5, fill="x")
+
+delete_list_button = tk.Button(
+    app, text="Delete list", command=lambda: delete_list())
+delete_list_button.pack(padx=5, fill="x")
+
+delete_task_button = tk.Button(
+    app, text="Delete task", command=lambda: delete_task())
+delete_task_button.pack(pady=5, padx=5, fill="x")
+
+complete_button = tk.Button(
+    app, text="Mark task as 'Completed'", command=lambda: task_complete())
+complete_button.pack(padx=5, fill="x")
+
+uncomplete_button = tk.Button(
+    app, text="Mark task as 'Not Completed'", command=lambda: task_uncomplete())
+uncomplete_button.pack(padx=5, pady=5, fill="x")
+
+input_label = tk.Label(app)
+input_label.pack()
+
+grid_frame = tk.Frame(app)
+grid_frame.pack()
+
+name_input = tk.Entry(grid_frame)
+name_input.grid(row=1, column=0)
+
+list_button = tk.Button(grid_frame, text="Create list",
+                        command=lambda: create_list())
+list_button.grid(row=1, column=1)
+
+task_button = tk.Button(grid_frame, text="Create task",
+                        command=lambda: create_task())
+task_button.grid(row=1, column=2)
+
 
 if __name__ == "__main__":
-    print("Welcome to Todo App!")
-    while True:
-        print("What would you like to do?")
-        print(
-            "1 - Create a todo list\n"
-            "2 - Create a task for todo list\n"
-            "3 - Display all lists\n"
-            "4 - Display all tasks\n"
-            "5 - Delete a list\n"
-            "6 - Delete a task\n"
-            "7 - Set task status to complete\n"
-            "8 - Set task status to not complete\n"
-            "9 - Exit app"
-        )
-        main_input = input("Enter selection: ")
-        try:
-            if main_input == "9":
-                exit()
-            elif main_input == "1":
-                print("-" * 100)
-                print("To create a list, you need a name for the list.")
-                user_input_name = input("Enter name: ")
-                crud.create_todo_list(user_input_name)
-                print(f"Todo list '{user_input_name}' succesfully created.")
-                print("-" * 100)
-            elif main_input == "2":
-                print("-" * 100)
-                print(
-                    "To create a task, \
-                    you need to know the list id to which you want to create the task for \
-                    and a name for the task."
-                )
-                user_input_id = int(input("Enter ID: "))
-                user_input_name = input("Enter name: ")
-                crud.create_task(user_input_id, user_input_name)
-                print(
-                    f"Task '{user_input_name}' \
-                    for list '{crud.select_list(user_input_id).title}' succesfully created."
-                )
-                print("-" * 100)
-            elif main_input == "3":
-                print("-" * 100)
-                print("All the currently available todo lists are:")
-                lists = crud.select_lists()
-                for list in lists:
-                    print(f"ID: {list.list_id}, Name: {list.title}")
-                print("-" * 100)
-            elif main_input == "4":
-                print("-" * 100)
-                print("All the currently available tasks are:")
-                tasks = crud.select_tasks()
-                for task in tasks:
-                    print(
-                        f"ID: {task.item_id}, \
-                        Name: {task.name}, \
-                        State: {'Completed' if task.state else 'Not completed'}, \
-                        List ID: {task.list_id}"
-                    )
-                print("-" * 100)
-            elif main_input == "5":
-                print("-" * 100)
-                print("To delete a list, you need to know the ID of the list.")
-                user_input_id = int(input("Enter ID: "))
-                list = crud.select_list(user_input_id).title
-                crud.delete_list(user_input_id)
-                print(f"List '{list}' succesfully deleted.")
-                print("-" * 100)
-            elif main_input == "6":
-                print("-" * 100)
-                print("To delete a task, you need to know the task ID.")
-                user_input_id = int(input("Enter ID: "))
-                task = crud.select_task(user_input_id).name
-                crud.delete_task(user_input_id)
-                print(f"Task '{task}' succesfully deleted.")
-                print("-" * 100)
-            elif main_input == "7":
-                print("-" * 100)
-                print("To set a task as completed, you need to know the task ID.")
-                user_input_id = int(input("Enter ID: "))
-                task = crud.select_task(user_input_id).name
-                crud.make_complete(user_input_id)
-                print(f"Task '{task}' status set as 'Completed'")
-                print("-" * 100)
-            elif main_input == "8":
-                print("-" * 100)
-                print("To set a task as not completed, you need to know the task ID.")
-                user_input_id = int(input("Enter ID: "))
-                task = crud.select_task(user_input_id).name
-                crud.make_not_complete(user_input_id)
-                print(f"Task '{task}' status set as 'Not Completed'")
-                print("-" * 100)
-            else:
-                print("-" * 100)
-                print("Not a valid input.")
-                print("-" * 100)
-        # I am not sure about this error handling, but it works.. Probably needs tweaking.
-        except AttributeError:  # This is for wrong number input.
-            print("-" * 100)
-            print("Not a valid Task ID / List ID.")
-            print("-" * 100)
-        except ValueError:  # This is for letter input instead of number.
-            print("-" * 100)
-            print("Not a valid Task ID / List ID.")
-            print("-" * 100)
+    app.mainloop()
