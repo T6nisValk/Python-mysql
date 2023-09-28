@@ -23,6 +23,7 @@ def delete_list():
         list_id = display_lists_lb.selection_get().split(" ")[1].rstrip(",")
         name = crud.select_list(int(list_id))
         crud.delete_list(int(list_id))
+        refresh()
         messagebox.showinfo(
             title="Info", message=f"List {name.title} and all it's tasks successfully deleted."
         )
@@ -35,6 +36,7 @@ def delete_task():
         task_id = display_tasks_lb.selection_get().split(" ")[1].rstrip(",")
         name = crud.select_task(int(task_id))
         crud.delete_task(int(task_id))
+        refresh()
         messagebox.showinfo(title="Info", message=f"Task {name.name} successfully deleted.")
     else:
         messagebox.showerror(title="Error", message="No task selected")
@@ -45,6 +47,7 @@ def create_list():
         name = name_input.get()
         name_input.delete(0, tk.END)
         crud.create_todo_list(name)
+        refresh()
         messagebox.showinfo(title="Info", message=f"List '{name}' successfully created!")
     else:
         messagebox.showwarning(title="Warning", message="Name should be at least 3 characters.")
@@ -58,6 +61,7 @@ def create_task():
             name = name_input.get()
             name_input.delete(0, tk.END)
             crud.create_task(selected_list_id, name)
+            refresh()
             messagebox.showinfo(
                 title="Info", message=f"Task '{name}' for '{list_name.title}' successfully created!"
             )
@@ -73,6 +77,7 @@ def task_complete():
         crud.select_task(selected_task_id)
         task = crud.select_task(selected_task_id)
         task.state = True
+        refresh()
         messagebox.showinfo(title="Info", message=f"{task.name} set to 'Completed'")
 
     else:
@@ -84,6 +89,7 @@ def task_uncomplete():
         selected_task_id = display_tasks_lb.selection_get().split(" ")[1].rstrip(",")
         task = crud.select_task(selected_task_id)
         task.state = False
+        refresh()
         messagebox.showinfo(title="Info", message=f"{task.name} set to 'Not Completed'")
     else:
         messagebox.showerror(title="Error", message="No task selected")
