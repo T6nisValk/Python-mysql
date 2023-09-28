@@ -1,6 +1,6 @@
 import crud
 
-
+# Make it an actual todo app
 if __name__ == "__main__":
     list_name = input("Enter the name of the list: ")
     crud.create_todo_list(list_name)
