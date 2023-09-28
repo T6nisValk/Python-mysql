@@ -107,7 +107,8 @@ def display_info():
 
 app = tk.Tk()
 app.title("Todo App")
-app.geometry("400x600")
+app.geometry("400x650")
+app.config(background="TEAL")
 
 menubar = tk.Menu(app)
 app.config(menu=menubar)
@@ -120,13 +121,15 @@ info_menu = tk.Menu(menubar, tearoff="off")
 info_menu.add_command(label="Help", command=lambda: display_info())
 menubar.add_cascade(label="Help", menu=info_menu)
 
-lists_label = tk.Label(app, text="Available lists.", justify="left")
+lists_label = tk.Label(app, text="Available lists.",
+                       justify="left", background="TEAL")
 lists_label.pack(padx=5, pady=5, anchor="w")
 
 display_lists_lb = tk.Listbox(app, width=38)
 display_lists_lb.pack(fill="x", padx=5)
 
-tasks_label = tk.Label(app, text="Available tasks.", justify="left")
+tasks_label = tk.Label(app, text="Available tasks.",
+                       justify="left", background="TEAL")
 tasks_label.pack(padx=5, pady=5, anchor="w")
 
 display_tasks_lb = tk.Listbox(app, width=39)
@@ -134,41 +137,41 @@ display_tasks_lb = tk.Listbox(app, width=39)
 display_tasks_lb.pack(padx=5, fill="x")
 
 refresh_data = tk.Button(
-    app, text="Refresh lists and tasks", command=lambda: refresh())
+    app, text="Refresh lists and tasks", command=lambda: refresh(), borderwidth=5, relief="raised")
 refresh_data.pack(padx=5, pady=5, fill="x")
 
 delete_list_button = tk.Button(
-    app, text="Delete list", command=lambda: delete_list())
+    app, text="Delete list", command=lambda: delete_list(), borderwidth=5, relief="raised")
 delete_list_button.pack(padx=5, fill="x")
 
 delete_task_button = tk.Button(
-    app, text="Delete task", command=lambda: delete_task())
+    app, text="Delete task", command=lambda: delete_task(), borderwidth=5, relief="raised")
 delete_task_button.pack(pady=5, padx=5, fill="x")
 
 complete_button = tk.Button(
-    app, text="Mark task as 'Completed'", command=lambda: task_complete())
+    app, text="Mark task as 'Completed'", command=lambda: task_complete(), borderwidth=5, relief="raised")
 complete_button.pack(padx=5, fill="x")
 
 uncomplete_button = tk.Button(
-    app, text="Mark task as 'Not Completed'", command=lambda: task_uncomplete())
+    app, text="Mark task as 'Not Completed'", command=lambda: task_uncomplete(), borderwidth=5, relief="raised")
 uncomplete_button.pack(padx=5, pady=5, fill="x")
 
 
-grid_frame = tk.Frame(app)
+grid_frame = tk.Frame(app, background="TEAL")
 grid_frame.pack()
 
-input_label = tk.Label(grid_frame, text="User input:")
+input_label = tk.Label(grid_frame, text="User input:", background="TEAL")
 input_label.grid(row=1, column=0)
 
-name_input = tk.Entry(grid_frame)
+name_input = tk.Entry(grid_frame, borderwidth=2, relief="sunken")
 name_input.grid(row=1, column=1)
 
 list_button = tk.Button(grid_frame, text="Create list",
-                        command=lambda: create_list())
-list_button.grid(row=1, column=2)
+                        command=lambda: create_list(), borderwidth=5, relief="raised")
+list_button.grid(row=1, column=2, padx=5)
 
 task_button = tk.Button(grid_frame, text="Create task",
-                        command=lambda: create_task())
+                        command=lambda: create_task(), borderwidth=5, relief="raised")
 task_button.grid(row=1, column=3)
 
 
