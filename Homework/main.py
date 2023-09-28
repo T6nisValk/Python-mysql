@@ -37,8 +37,8 @@ if __name__ == "__main__":
                 user_input_name = input("Enter name: ")
                 crud.create_task(user_input_id, user_input_name)
                 print(
-                    f"Task '{user_input_name}'"
-                    f"for list '{crud.select_list(user_input_id).title}' succesfully created."
+                    f"Task '{user_input_name}' \
+                    for list '{crud.select_list(user_input_id).title}' succesfully created."
                 )
                 print("-" * 100)
             elif main_input == "3":
@@ -54,10 +54,10 @@ if __name__ == "__main__":
                 tasks = crud.select_tasks()
                 for task in tasks:
                     print(
-                        f"ID: {task.item_id},"
-                        f"Name: {task.name},"
-                        f"State: {'Completed' if task.state else 'Not completed'},"
-                        f"List ID: {task.list_id}"
+                        f"ID: {task.item_id}, \
+                        Name: {task.name}, \
+                        State: {'Completed' if task.state else 'Not completed'}, \
+                        List ID: {task.list_id}"
                     )
                 print("-" * 100)
             elif main_input == "5":
