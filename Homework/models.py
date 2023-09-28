@@ -17,8 +17,7 @@ class TodoItems(Base):
 
     item_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    list_id = Column(Integer, ForeignKey(
-        "todo_lists.list_id", ondelete="CASCADE"))
+    list_id = Column(Integer, ForeignKey("todo_lists.list_id", ondelete="CASCADE"))
     state = Column(Boolean, default=False)
 
     def __repr__(self):
