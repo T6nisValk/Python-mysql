@@ -78,7 +78,6 @@ def task_complete():
         task.state = True
         refresh()
         messagebox.showinfo(title="Info", message=f"{task.name} set to 'Completed'")
-
     else:
         messagebox.showerror(title="Error", message="No task selected")
 
@@ -132,7 +131,6 @@ tasks_label = tk.Label(app, text="Available tasks.", justify="left", background=
 tasks_label.pack(padx=5, pady=5, anchor="w")
 
 display_tasks_lb = tk.Listbox(app, width=39)
-
 display_tasks_lb.pack(padx=5, fill="x")
 
 refresh_data = tk.Button(
