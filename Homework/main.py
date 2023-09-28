@@ -94,9 +94,31 @@ def task_uncomplete():
         messagebox.showerror(title="Error", message="No task selected")
 
 
+def display_info():
+    messagebox.showinfo(title="Help info",
+                        message="Welcome to the TODO APP!\n"
+                                "- To see currently created lists and tasks, hit the refresh button.\n"
+                                "- To delete a list or a task, first select a list or a task from the available lists/tasks.\n"
+                                "- To mark a task Completed or Not Completed, first select a task from the available tasks.\n"
+                                "- To create a list, enter a name in the input field and click on the Create list button.\n"
+                                "- To create a task, first select a list you want to create a task for and then enter the name "
+                                "in the input field and click Create task button.")
+
+
 app = tk.Tk()
 app.title("Todo App")
 app.geometry("400x600")
+
+menubar = tk.Menu(app)
+app.config(menu=menubar)
+
+file_menu = tk.Menu(menubar, tearoff="off")
+file_menu.add_command(label="Exit", command=app.destroy)
+menubar.add_cascade(label="File", menu=file_menu)
+
+info_menu = tk.Menu(menubar, tearoff="off")
+info_menu.add_command(label="Help", command=lambda: display_info())
+menubar.add_cascade(label="Help", menu=info_menu)
 
 lists_label = tk.Label(app, text="Available lists.", justify="left")
 lists_label.pack(padx=5, pady=5, anchor="w")
@@ -131,22 +153,23 @@ uncomplete_button = tk.Button(
     app, text="Mark task as 'Not Completed'", command=lambda: task_uncomplete())
 uncomplete_button.pack(padx=5, pady=5, fill="x")
 
-input_label = tk.Label(app)
-input_label.pack()
 
 grid_frame = tk.Frame(app)
 grid_frame.pack()
 
+input_label = tk.Label(grid_frame, text="User input:")
+input_label.grid(row=1, column=0)
+
 name_input = tk.Entry(grid_frame)
-name_input.grid(row=1, column=0)
+name_input.grid(row=1, column=1)
 
 list_button = tk.Button(grid_frame, text="Create list",
                         command=lambda: create_list())
-list_button.grid(row=1, column=1)
+list_button.grid(row=1, column=2)
 
 task_button = tk.Button(grid_frame, text="Create task",
                         command=lambda: create_task())
-task_button.grid(row=1, column=2)
+task_button.grid(row=1, column=3)
 
 
 if __name__ == "__main__":
