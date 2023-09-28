@@ -74,7 +74,6 @@ def create_task():
 def task_complete():
     if display_tasks_lb.curselection():
         selected_task_id = display_tasks_lb.selection_get().split(" ")[1].rstrip(",")
-        crud.select_task(selected_task_id)
         task = crud.select_task(selected_task_id)
         task.state = True
         refresh()
@@ -110,7 +109,6 @@ def display_info():
 
 app = tk.Tk()
 app.title("Todo App")
-app.geometry("400x650")
 app.config(background="TEAL")
 
 menubar = tk.Menu(app)
