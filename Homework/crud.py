@@ -15,6 +15,11 @@ def create_task(list_id, name):
     session.commit()
 
 
+# Work in progress
+def create_list_with_items(title, items):
+    pass
+
+
 def select_tasks():
     return session.query(TodoItems).all()
 

@@ -24,9 +24,7 @@ def delete_list():
         name = crud.select_list(int(list_id))
         crud.delete_list(int(list_id))
         refresh()
-        messagebox.showinfo(
-            title="Info", message=f"List {name.title} and all it's tasks successfully deleted."
-        )
+        messagebox.showinfo(title="Info", message=f"List {name.title} and all it's tasks successfully deleted.")
     else:
         messagebox.showerror(title="Error", message="No list selected")
 
@@ -62,9 +60,7 @@ def create_task():
             name_input.delete(0, tk.END)
             crud.create_task(selected_list_id, name)
             refresh()
-            messagebox.showinfo(
-                title="Info", message=f"Task '{name}' for '{list_name.title}' successfully created!"
-            )
+            messagebox.showinfo(title="Info", message=f"Task '{name}' for '{list_name.title}' successfully created!")
         else:
             messagebox.showwarning(title="Warning", message="Name should be at least 3 characters.")
     else:
@@ -110,6 +106,8 @@ app = tk.Tk()
 app.title("Todo App")
 app.config(background="TEAL")
 
+photo = tk.PhotoImage(file="list.png")
+app.iconphoto(True, photo)
 menubar = tk.Menu(app)
 app.config(menu=menubar)
 
@@ -134,18 +132,18 @@ display_tasks_lb = tk.Listbox(app, width=39)
 display_tasks_lb.pack(padx=5, fill="x")
 
 refresh_data = tk.Button(
-    app, text="Refresh lists and tasks", command=lambda: refresh(), borderwidth=5, relief="raised"
+    app,
+    text="Refresh lists and tasks",
+    command=lambda: refresh(),
+    borderwidth=5,
+    relief="raised",
 )
 refresh_data.pack(padx=5, pady=5, fill="x")
 
-delete_list_button = tk.Button(
-    app, text="Delete list", command=lambda: delete_list(), borderwidth=5, relief="raised"
-)
+delete_list_button = tk.Button(app, text="Delete list", command=lambda: delete_list(), borderwidth=5, relief="raised")
 delete_list_button.pack(padx=5, fill="x")
 
-delete_task_button = tk.Button(
-    app, text="Delete task", command=lambda: delete_task(), borderwidth=5, relief="raised"
-)
+delete_task_button = tk.Button(app, text="Delete task", command=lambda: delete_task(), borderwidth=5, relief="raised")
 delete_task_button.pack(pady=5, padx=5, fill="x")
 
 complete_button = tk.Button(
@@ -176,14 +174,10 @@ input_label.grid(row=1, column=0)
 name_input = tk.Entry(grid_frame, borderwidth=2, relief="sunken")
 name_input.grid(row=1, column=1)
 
-list_button = tk.Button(
-    grid_frame, text="Create list", command=lambda: create_list(), borderwidth=5, relief="raised"
-)
+list_button = tk.Button(grid_frame, text="Create list", command=lambda: create_list(), borderwidth=5, relief="raised")
 list_button.grid(row=1, column=2, padx=5)
 
-task_button = tk.Button(
-    grid_frame, text="Create task", command=lambda: create_task(), borderwidth=5, relief="raised"
-)
+task_button = tk.Button(grid_frame, text="Create task", command=lambda: create_task(), borderwidth=5, relief="raised")
 task_button.grid(row=1, column=3)
 
 
