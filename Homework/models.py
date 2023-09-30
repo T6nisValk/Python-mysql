@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 eng = create_engine("sqlite:///todo_app.db")
 Base = declarative_base()
@@ -10,6 +10,8 @@ class TodoLists(Base):
 
     list_id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(255), nullable=False)
+
+    items = relationship("TodoItems", backref="todo_lists", cascade="all, delete-orphan")
 
 
 class TodoItems(Base):
